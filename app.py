@@ -22,7 +22,7 @@ def create_app(test_config=None):
     response.headers.add('Access-Control-Allow-Origin' ,  'http://localhost:5000')
     return response 
   
-  @app.route('/', methods=['GET'])
+  @app.route('/test', methods=['GET'])
   def test_api():
     return jsonify({
       'success': True ,
