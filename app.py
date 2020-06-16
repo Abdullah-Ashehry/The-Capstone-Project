@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import Movie , Actor ,setup_db
 from flask_moment import Moment
-from .auth.auth import AuthError, requires_auth
+from controllers.auth import AuthError, requires_auth
 
 
 
@@ -81,27 +81,27 @@ def create_app(test_config=None):
   @app.route('/actors', methods=['POST'])
   @requires_auth('post:actor')
   def add_actor(jwt):
-    body = request.get_json()
-    new_name = body.get('name',None)
-    new_age = body.get('age', None)
-    new_gender = body.get('gender',None)
-    new_shows_movies = body.get('shows_movie',None)
+      body = request.get_json()
+      new_name = body.get('name',None)
+      new_age = body.get('age', None)
+      new_gender = body.get('gender',None)
+      new_shows_movie = body.get('shows_movie',None)
 
-    try:
-      actor = Actor(new_name, new_age, new_gender, new_shows_movies)
+  #  try:
+      actor = Actor(name = new_name, age = new_age,gender =  new_gender,shows_movie =  new_shows_movie)
       actor.insert()
 
-      selection = list(Actor.query.order_by(Actor.id).all())
-      current_actors = paginate_actors(request,selection)
+      selection = (Actor.query.order_by(Actor.id).all())
+      # current_actors = paginate_actors(request,selection)
 
       return jsonify({
         'success' : True, 
         'created' : actor.id,
-        'actors' : current_actors,
+        'actors' : selection,
         'total_actors' : len(selection)
       })
-    except Exception : 
-      abort(401)
+    # except Exception : 
+      # abort(422)
 
   @app.route('/movies', methods=['POST'])
   @requires_auth('post:movie')
@@ -113,7 +113,7 @@ def create_app(test_config=None):
     new_actor = body.get('Actor_id', None)
     
     try:
-      movie = Movie(new_title, new_city, new_release_date, new_actor)
+      movie = Movie(title = new_title,city =  new_city,release_date =  new_release_date,Actor_id = new_actor)
       movie.insert()
 
       selection = list(Movie.query.order_by(Movie.id).all())
@@ -127,7 +127,7 @@ def create_app(test_config=None):
       })
 
     except Exception:
-      abort(401)
+      abort(422)
 
   @app.route('/actors/<int:actor_id>' , methods = ['DELETE'])
   @requires_auth('delete:actor')
@@ -147,7 +147,7 @@ def create_app(test_config=None):
       })
 
     except Exception:
-      abort(401)
+      abort(422)
 
   @app.route('/movies/<int:movie_id>')
   @requires_auth('delete:movie')
@@ -167,7 +167,7 @@ def create_app(test_config=None):
         'total_movies':len(selection)
       })
     except Exception:
-      abort(401)
+      abort(422)
 
   @app.route('/actors/<int:actor_id>', methods = ['PATCH'])
   @requires_auth('patch:actor')
@@ -218,8 +218,49 @@ def create_app(test_config=None):
     except Exception:
       abort(422)
 
-  
+  @app.route('/searchActors', methods = ['POST'])
+  @requires_auth('search:actor')
+  def search_actor(jwt):
+        try:
 
+          body = request.get_json()
+    
+          if ('name' in body):
+            name = body.get('name', None)
+            selection = Actor.query.filter(Actor.title.ilike(f'%{name}%')).all()
+          if ('age' in body):
+              age = body.get('age',None)
+              selection = Actor.query.filter(Actor.age == (age))
+
+          return jsonify({
+            'success' : True,
+            'mathches' : selection,
+            'number of matches' : len(selection)
+          })
+        except Exception:
+          abort(422)
+
+  @app.route('/searchMovies', methods = ['POST'])
+  @requires_auth('search:movie')
+  def search_movie(jwt):
+        try:
+
+          body = request.get_json()
+
+          if('title' in body):
+            title = body.get('title',None)
+            selection = Movie.query.filter(Movie.title.ilike(f'%{title}%')).all()
+          if('city' in body):
+            city = body.get('city')
+            selection = Movie.query.filter(Movie.city.ilike(f'%{city}%')).all()
+
+          return jsonify({
+            'success' : True,
+            'matches' : selection,
+            'number_of_matches' : len(selection)
+          })
+        except Exception:
+          abort(422)
 
 
   @app.errorhandler(422)
@@ -239,9 +280,18 @@ def create_app(test_config=None):
                       "message": "resource not found"
                       }), 404
 
+  @app.errorhandler(500)
+  def Internal_server_error(error):
+      return jsonify({
+                      "success": False,
+                      "error": 500,
+                      "message": "Internal Server Error"
+                      }), 500
+
+
 
   @app.errorhandler(AuthError)
-  def AuthError(error):
+  def handle_Auth_Error(error):
       return jsonify({
                       "success": False,
                       "error": 401,
