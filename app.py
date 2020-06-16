@@ -85,49 +85,49 @@ def create_app(test_config=None):
       new_name = body.get('name',None)
       new_age = body.get('age', None)
       new_gender = body.get('gender',None)
-      new_shows_movie = body.get('shows_movie',None)
+      
 
-  #  try:
-      actor = Actor(name = new_name, age = new_age,gender =  new_gender,shows_movie =  new_shows_movie)
-      actor.insert()
+      try:
+        actor = Actor(name = new_name, age = new_age,gender =  new_gender)
+        actor.insert()
 
-      selection = (Actor.query.order_by(Actor.id).all())
-      # current_actors = paginate_actors(request,selection)
+        selection = (Actor.query.order_by(Actor.id).all())
+        current_actors = paginate_actors(request,selection)
 
-      return jsonify({
-        'success' : True, 
-        'created' : actor.id,
-        'actors' : selection,
-        'total_actors' : len(selection)
-      })
-    # except Exception : 
-      # abort(422)
+        return jsonify({
+          'success' : True, 
+          'created' : actor.id,
+          'actors' : current_actors,
+          'total_actors' : len(selection)
+        })
+      except Exception : 
+        abort(422)
 
   @app.route('/movies', methods=['POST'])
   @requires_auth('post:movie')
   def add_movie(jwt):
-    body = request.get_json()
-    new_title = body.get('title', None)
-    new_city = body.get('city', None)
-    new_release_date = body.get('release_date', None)
-    new_actor = body.get('Actor_id', None)
+      body = request.get_json()
+      new_title = body.get('title', None)
+      new_city = body.get('city', None)
+      new_release_date = body.get('release_date', None)
     
-    try:
-      movie = Movie(title = new_title,city =  new_city,release_date =  new_release_date,Actor_id = new_actor)
-      movie.insert()
+    
+      try:
+        movie = Movie(title = new_title,city =  new_city,release_date =  new_release_date)
+        movie.insert()
 
-      selection = list(Movie.query.order_by(Movie.id).all())
-      current_movies = paginate_movies(request, selection)
+        selection = list(Movie.query.order_by(Movie.id).all())
+        current_movies = paginate_movies(request, selection)
 
-      return jsonify({
-        'succeess':True,
-        'created': movie.id,
-        'movies': current_movies,
-        'total_movies':len(selection)
-      })
+        return jsonify({
+          'success':True,
+          'created': movie.id,
+          'movies': current_movies,
+          'total_movies':len(selection)
+        })
 
-    except Exception:
-      abort(422)
+      except Exception:
+        abort(422)
 
   @app.route('/actors/<int:actor_id>' , methods = ['DELETE'])
   @requires_auth('delete:actor')
@@ -149,7 +149,7 @@ def create_app(test_config=None):
     except Exception:
       abort(422)
 
-  @app.route('/movies/<int:movie_id>')
+  @app.route('/movies/<int:movie_id>', methods = ['DELETE'])
   @requires_auth('delete:movie')
   def delete_movie(jwt, movie_id):
     try:
@@ -175,10 +175,11 @@ def create_app(test_config=None):
     try:
       actor = Actor.query.filter(Actor.id == actor_id).first_or_404()
       body = request.get_json()
+
       actor.name = body.get('name',None)
       actor.age = body.get('age',None)
       actor.gender = body.get('gender',None)
-      actor.shows_movie = body.get('shows_movie',None)
+      
       actor.update()
 
       selection = list(Actor.query.order_by(Actor.id).all())
@@ -203,7 +204,7 @@ def create_app(test_config=None):
       movie.title = body.get('title',None)
       movie.city = body.get('city',None)
       movie.release_date = body.get('release_date',None)
-      movie.Actor_id = body.get('Actor_id',None)
+    
       movie.update()
 
       selection = list(Movie.query.order_by(Movie.id).all())
@@ -227,15 +228,17 @@ def create_app(test_config=None):
     
           if ('name' in body):
             name = body.get('name', None)
-            selection = Actor.query.filter(Actor.title.ilike(f'%{name}%')).all()
+            selection = Actor.query.filter(Actor.name.ilike(f'%{name}%')).all()
+            current_actors = paginate_actors(request,selection)
           if ('age' in body):
               age = body.get('age',None)
               selection = Actor.query.filter(Actor.age == (age))
+              current_actors = paginate_actors(request,selection)
 
           return jsonify({
             'success' : True,
-            'mathches' : selection,
-            'number of matches' : len(selection)
+            'mathches' : current_actors,
+            'number of matches' : len(current_actors)
           })
         except Exception:
           abort(422)
@@ -244,20 +247,20 @@ def create_app(test_config=None):
   @requires_auth('search:movie')
   def search_movie(jwt):
         try:
-
           body = request.get_json()
 
           if('title' in body):
             title = body.get('title',None)
             selection = Movie.query.filter(Movie.title.ilike(f'%{title}%')).all()
+            current_movies = paginate_movies(request,selection)
           if('city' in body):
             city = body.get('city')
             selection = Movie.query.filter(Movie.city.ilike(f'%{city}%')).all()
-
+            current_movies = paginate_movies(request,selection)
           return jsonify({
             'success' : True,
-            'matches' : selection,
-            'number_of_matches' : len(selection)
+            'matches' : current_movies,
+            'number_of_matches' : len(current_movies)
           })
         except Exception:
           abort(422)
