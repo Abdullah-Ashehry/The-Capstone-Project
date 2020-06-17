@@ -47,8 +47,10 @@ class CapstoneTest(unittest.TestCase):
         pass
 
     def test_get_actors(self):
-        res = self.client().get('/actors', headers={'Authorization':
-                                'Bearer ' + self.casting_assistant})
+        res = self.client().get(
+            '/actors',
+            headers={
+                'Authorization': 'Bearer ' + self.casting_assistant})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -57,8 +59,10 @@ class CapstoneTest(unittest.TestCase):
         self.assertTrue((data['total_actors']))
 
     def test_get_movies(self):
-        res = self.client().get('/movies', headers={'Authorization':
-                                'Bearer ' + self.casting_assistant})
+        res = self.client().get(
+            '/movies',
+            headers={
+                'Authorization': 'Bearer ' + self.casting_assistant})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -128,8 +132,10 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_delete_movie(self):
-        res = self.client().delete('/movies/1', headers={'Authorization':
-                                   'Bearer ' + self.excecutive_producer})
+        res = self.client().delete(
+            '/movies/1',
+            headers={
+                'Authorization': 'Bearer ' + self.excecutive_producer})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -139,8 +145,8 @@ class CapstoneTest(unittest.TestCase):
         self.assertTrue((data['total_movies']))
 
     def test_delete_movie_fail(self):
-        res = self.client().delete('/movies/1', headers={'Authorization':
-                                   'Bearer ' + self.casting_director})
+        res = self.client().delete('/movies/1',
+                                   headers={'Authorization': 'Bearer ' + self.casting_director})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)

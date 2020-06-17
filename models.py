@@ -5,7 +5,7 @@ import json
 from flask_migrate import Migrate
 
 
-database_path ='postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj'
+database_path = 'postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj'
 # database_path = "postgres://{}/{}".format('localhost:5432', 'capstone')
 db = SQLAlchemy()
 
@@ -39,11 +39,11 @@ class Movie(db.Model):
 
     def format(self):
         return {
-                'id': self.id,
-                'title': self.title,
-                'city': self.city,
-                'release_date': self.release_date
-                }
+            'id': self.id,
+            'title': self.title,
+            'city': self.city,
+            'release_date': self.release_date
+        }
 
 
 class Actor(db.Model):
@@ -65,9 +65,9 @@ class Actor(db.Model):
         db.session.commit()
 
     def format(self):
-            return {
-                      'id': self.id,
-                      'name': self.name,
-                      'age': self.age,
-                      'gender': self.gender
-                    }
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'gender': self.gender
+        }
