@@ -269,6 +269,13 @@ def create_app(test_config=None):
                 # except Exception:
                         # abort(422)
 
+        @app.route('/')
+        def main_page():
+              return jsonify({
+                'success': False,
+                'message': 'please access the correct address with proper authorization'
+              })
+
         @app.errorhandler(422)
         def unprocessable(error):
                     return jsonify({
