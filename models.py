@@ -5,8 +5,8 @@ import json
 from flask_migrate import Migrate
 
 
-# database_path ='postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj'
-database_path = "postgres://{}/{}".format('localhost:5432', 'capstone')
+database_path ='postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj'
+# database_path = "postgres://{}/{}".format('localhost:5432', 'capstone')
 db = SQLAlchemy()
 
 
