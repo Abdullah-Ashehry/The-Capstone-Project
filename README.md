@@ -26,14 +26,16 @@ export FLASK_APP=app.py;
 flask run --reload
 
 
-# Testing using unittest : (Copy all as a block and paste in the terminal inside /THE-CAPSTONE-PROJECT)
+# Testing using unittest :
+!(Copy all as a block and paste in the terminal inside /THE-CAPSTONE-PROJECT)
 dropdb capstone_test&&
 createdb capstone_test&&
 psql capstone_test < capstone.pgsql&&
 python3 test_app.py
 
 
-# Testing using postman : (Testing must be done on the local db after setting it up)
+# Testing using postman :
+! (Testing must be done on the local db after setting it up)
 Collection is imported in the folder in the name : postman and it contains two environments : 
 1- udacity-capstone : which is run on the local server db .
 2- heroku-capstone which is run on the heroku psql (But some of the endpoints may not work here due to diffrent id numbers)
