@@ -60,7 +60,7 @@ def create_app(test_config=None):
         })
 
     @app.route('/movies', methods=['GET'])
-    @requires_auth('get:movies')
+    # @requires_auth('get:movies')
     def get_movies(jwt):
         selection = list(Movie.query.order_by(Movie.id).all())
         current_movies = paginate_movies(request, selection)
@@ -97,7 +97,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies', methods=['POST'])
-    @requires_auth('post:movie')
+    # @requires_auth('post:movie')
     def add_movie(jwt):
         body = request.get_json()
         new_title = body.get('title', None)
@@ -144,7 +144,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-    @requires_auth('delete:movie')
+    # @requires_auth('delete:movie')
     def delete_movie(jwt, movie_id):
         try:
 
@@ -192,7 +192,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-    @requires_auth('patch:movie')
+    # @requires_auth('patch:movie')
     def edit_movie(jwt, movie_id):
         try:
             movie = Movie.query.filter(Movie.id ==
@@ -245,7 +245,7 @@ def create_app(test_config=None):
             abort(422)
 
     @app.route('/searchMovies', methods=['POST'])
-    @requires_auth('search:movie')
+    # @requires_auth('search:movie')
     def search_movie(jwt):
         # try:
         body = request.get_json()
