@@ -98,7 +98,7 @@ def create_app(test_config=None):
 
     @app.route('/movies', methods=['POST'])
     # @requires_auth('post:movie')
-    def add_movie(jwt):
+    def add_movie():
         body = request.get_json()
         new_title = body.get('title', None)
         new_city = body.get('city', None)
@@ -145,7 +145,7 @@ def create_app(test_config=None):
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
     # @requires_auth('delete:movie')
-    def delete_movie(jwt, movie_id):
+    def delete_movie(movie_id):
         try:
 
             movie = Movie.query.filter(Movie.id ==
@@ -193,7 +193,7 @@ def create_app(test_config=None):
 
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
     # @requires_auth('patch:movie')
-    def edit_movie(jwt, movie_id):
+    def edit_movie(movie_id):
         try:
             movie = Movie.query.filter(Movie.id ==
                                        movie_id).first_or_404()
