@@ -246,7 +246,7 @@ def create_app(test_config=None):
 
     @app.route('/searchMovies', methods=['POST'])
     # @requires_auth('search:movie')
-    def search_movie(jwt):
+    def search_movie():
         # try:
         body = request.get_json()
 
