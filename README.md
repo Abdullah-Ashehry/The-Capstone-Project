@@ -51,6 +51,7 @@ If there is an error in one of the tests run it seperatly it will work instead o
 
 
 # Heroku : 
+- Heroku: fsnd-backend
 - Link for the application : https://capstone-fsnd-try.herokuapp.com
 - Link for Database URI : postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj
 
