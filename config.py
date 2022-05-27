@@ -7,9 +7,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 DEBUG = True
 
 # Connect to the database Heroku
-DATABASE_URL = "postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj"
+DATABASE_URL = "postgres://uuggfytauonmci:b88f57433f55738871dbc5d336cae951d8c8d82da8d89ccd60bcbb461a88ee2b@ec2-3-211-221-185.compute-1.amazonaws.com:5432/df7u7t3ffkae1n"
 os.getenv("{DATABASE_URL}")
 
 
 # TODO IMPLEMENT DATABASE URL
-SQLALCHEMY_DATABASE_URI = 'postgres://cyusdufwqepfbx:86ff10ea3963bed3ba9a8867168c5e727023c041cd42de3751ff9590ed2c8867@ec2-54-86-170-8.compute-1.amazonaws.com:5432/ddp273p1s8o4pj'
+SQLALCHEMY_DATABASE_URI = 'postgres://uuggfytauonmci:b88f57433f55738871dbc5d336cae951d8c8d82da8d89ccd60bcbb461a88ee2b@ec2-3-211-221-185.compute-1.amazonaws.com:5432/df7u7t3ffkae1n'
