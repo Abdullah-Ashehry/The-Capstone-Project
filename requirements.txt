@@ -28,7 +28,7 @@ prometheus-client==0.7.1
 prometheus-flask-exporter==0.13.0
 protobuf==3.11.3
 psycopg2-binary==2.8.4
-py==1.8.1
+py==1.10.0
 pyasn1==0.4.8
 pycparser==2.20
 PyJWT==1.7.1
