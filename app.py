@@ -61,7 +61,7 @@ def create_app(test_config=None):
 
     @app.route('/movies', methods=['GET'])
     # @requires_auth('get:movies')
-    def get_movies(jwt):
+    def get_movies():
         selection = list(Movie.query.order_by(Movie.id).all())
         current_movies = paginate_movies(request, selection)
 
