@@ -34,7 +34,7 @@ class Movie(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     category = db.Column(db.String)
     description = db.Column(db.String)
-    year = db.Column(db)
+    year = db.Column(db.String)
 
     def insert(self):
         db.session.add(self)
