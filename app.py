@@ -1,4 +1,6 @@
 import os
+from re import M
+from unicodedata import name
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -71,6 +73,23 @@ def create_app(test_config=None):
             'total_movies': len(selection)
         })
 
+    @app.route('/movies/<int:movie_id>', methods=['GET'])
+    # @requires_auth('get:movies')
+    def get_movie_by_movie_id(movie_id):
+        try:
+            movie = Movie.query.filter(Movie.id ==
+                                       movie_id).first_or_404()
+
+            selection = list(Movie.query.order_by(Movie.id).all())
+
+            return jsonify({
+                'success': True,
+                'movie': movie,
+                'total_movies': len(selection)
+            })
+        except Exception:
+            abort(422)
+
     @app.route('/actors', methods=['POST'])
     @requires_auth('post:actor')
     def add_actor(jwt):
@@ -100,13 +119,16 @@ def create_app(test_config=None):
     # @requires_auth('post:movie')
     def add_movie():
         body = request.get_json()
-        new_title = body.get('title', None)
-        new_city = body.get('city', None)
-        new_release_date = body.get('release_date', None)
+        thumbnail = body.get('thumbnail', None)
+        video = body.get('video', None)
+        name = body.get('name', None)
+        category = body.get('category', None)
+        description = body.get('description', None)
+        year = body.get('year', None)
 
         try:
-            movie = Movie(title=new_title, city=new_city,
-                          release_date=new_release_date)
+            movie = Movie(thumbnail=thumbnail, video=video, name=name,
+                          category=category, description=description, year=year)
             movie.insert()
 
             selection = list(Movie.query.order_by(Movie.id).all())
@@ -198,9 +220,13 @@ def create_app(test_config=None):
             movie = Movie.query.filter(Movie.id ==
                                        movie_id).first_or_404()
             body = request.get_json()
-            movie.title = body.get('title', None)
-            movie.city = body.get('city', None)
-            movie.release_date = body.get('release_date', None)
+
+            movie.thumbnail = body.get('thumbnail', None)
+            movie.video_url = body.get('video_url', None)
+            movie.name = body.get('name', None)
+            movie.category = body.get('category', None)
+            movie.description = body.get('description', None)
+            movie.year = body.get('year', None)
 
             movie.update()
 

@@ -19,12 +19,21 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
+# Thumbnail
+# Video
+# Name
+# Category
+# Description
+# Year
 class Movie(db.Model):
     __tablename__ = 'Movie'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, unique=True, nullable=False)
-    city = db.Column(db.String(120), nullable=False)
-    release_date = db.Column(db.String(120), nullable=False)
+    thumbnail = db.Column(db.String)
+    video = db.Column(db.String)
+    name = db.Column(db.String, unique=True, nullable=False)
+    category = db.Column(db.String)
+    description = db.Column(db.String)
+    year = db.Column(db)
 
     def insert(self):
         db.session.add(self)
@@ -40,9 +49,12 @@ class Movie(db.Model):
     def format(self):
         return {
             'id': self.id,
-            'title': self.title,
-            'city': self.city,
-            'release_date': self.release_date
+            'thumbnail': self.thumbnail,
+            'video': self.video,
+            'name': self.name,
+            'category': self.category,
+            'description': self.description,
+            'year': self.year
         }
 
 
