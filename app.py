@@ -76,19 +76,17 @@ def create_app(test_config=None):
     @app.route('/movies/<int:movie_id>', methods=['GET'])
     # @requires_auth('get:movies')
     def get_movie_by_movie_id(movie_id):
-        try:
-            movie = Movie.query.filter(Movie.id ==
-                                       movie_id).first_or_404()
 
-            selection = list(Movie.query.order_by(Movie.id).all())
+        movie = Movie.query.filter(Movie.id ==
+                                   movie_id).first_or_404()
 
-            return jsonify({
-                'success': True,
-                'movie': movie,
-                'total_movies': len(selection)
-            })
-        except Exception:
-            abort(422)
+        selection = list(Movie.query.order_by(Movie.id).all())
+
+        return jsonify({
+            'success': True,
+            'movie': movie,
+            'total_movies': len(selection)
+        })
 
     @app.route('/actors', methods=['POST'])
     @requires_auth('post:actor')
