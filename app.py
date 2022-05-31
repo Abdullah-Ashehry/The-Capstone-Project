@@ -84,7 +84,7 @@ def create_app(test_config=None):
 
         return jsonify({
             'success': True,
-            'movie': movie,
+            'movie': format(movie),
             'total_movies': len(selection)
         })
 
