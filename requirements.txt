@@ -49,5 +49,5 @@ sqlparse==0.3.1
 tabulate==0.8.7
 urllib3==1.25.8
 wcwidth==0.2.3
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 WTForms==2.2.1
